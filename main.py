@@ -1,24 +1,22 @@
 import pafy
 import cv2
 
-url = "https://www.youtube.com/watch?v=7EPJEg6R3SM"
-video = pafy.new(url)
-best = video.getbest(preftype="mp4")
+URL = "https://www.youtube.com/watch?v=7EPJEg6R3SM"
+VIDEO = pafy.new(URL)
+BEST = VIDEO.getbest(preftype="mp4")
+CAPTURE = cv2.VideoCapture(BEST.url)
+BIRDS_CASCADE = cv2.CascadeClassifier("birds1.xml")
 
-capture = cv2.VideoCapture(best.url)
 count = 0
-
-birdsCascade = cv2.CascadeClassifier("birds1.xml")
-
 while True:
-    grabbed, frame = capture.read()
+    grabbed, frame = CAPTURE.read()
     
     if count % 10 == 0:
         
         # convert the frame into gray scale for better analysis
         grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         
-        birds = birdsCascade.detectMultiScale(
+        birds = BIRDS_CASCADE.detectMultiScale(
             grey,
             scaleFactor=1.8,
             minNeighbors=5,
